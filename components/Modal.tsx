@@ -28,8 +28,8 @@ export function Modal({ open, onClose, children, width = 360, closeOnBackdrop = 
       onClick={() => closeOnBackdrop && onClose?.()}
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl"
-        style={{ width }}
+        className="bg-white rounded-2xl shadow-2xl w-full"
+        style={{ maxWidth: width }}
         onClick={(e) => e.stopPropagation()}
       >
         {children}

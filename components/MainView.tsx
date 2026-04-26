@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 import { useAppStore } from "@/lib/store";
 import { dateKey, daysInYear, dayOfYear, YEAR } from "@/lib/dates";
 import { ProfileAvatar } from "./ProfileAvatar";
@@ -34,6 +35,7 @@ export function MainView() {
   const [inspireModal, setInspireModal] = useState(false);
   const [authModal, setAuthModal] = useState<null | "login" | "signup">(null);
   const [guestSaveOpen, setGuestSaveOpen] = useState(false);
+  const [mobileGoalsOpen, setMobileGoalsOpen] = useState(false);
 
   const today = new Date();
   const completedDayCount = (() => {
@@ -58,37 +60,48 @@ export function MainView() {
     }
   }, [isGuest, todayGoalsCount]);
 
+  function handleSelectDay(key: string) {
+    setSelectedKey(key);
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 767px)").matches
+    ) {
+      setMobileGoalsOpen(true);
+    }
+  }
+
   if (!hydrated) {
     return <div className="min-h-screen bg-white" />;
   }
 
   return (
     <div className="min-h-screen bg-white relative">
-      <div className="flex h-screen">
-        <main className="flex-1 overflow-y-auto pl-[60px] pr-[40px] py-[60px]">
-          <div className="flex flex-col gap-[60px] max-w-[820px]">
+      <div className="flex flex-col md:flex-row md:h-screen">
+        <main className="flex-1 md:overflow-y-auto px-5 pt-8 pb-12 md:pl-[60px] md:pr-[40px] md:py-[60px]">
+          <div className="flex flex-col gap-10 md:gap-[60px] max-w-[820px]">
             <header className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <h1 className="font-serif text-[36px] text-black leading-tight">
+              <div className="flex items-start justify-between gap-3 flex-wrap">
+                <h1 className="font-serif text-2xl md:text-[36px] text-black leading-tight">
                   Tu {YEAR} en puntos
                 </h1>
                 {isGuest ? (
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 ml-auto">
                     <button
                       onClick={() => setAuthModal("login")}
-                      className="flex items-center gap-2 border border-line rounded-lg px-3 py-2 text-sm font-medium text-black hover:bg-surface"
+                      className="flex items-center gap-1.5 border border-line rounded-lg px-2.5 py-2 text-xs md:text-sm font-medium text-black hover:bg-surface"
                     >
-                      <GoogleG /> Iniciar sesión
+                      <GoogleG />
+                      <span className="hidden sm:inline">Iniciar sesión</span>
                     </button>
                     <button
                       onClick={() => setAuthModal("signup")}
-                      className="bg-black text-white rounded-lg px-3 py-2 text-sm font-medium hover:bg-gray-800"
+                      className="bg-black text-white rounded-lg px-2.5 md:px-3 py-2 text-xs md:text-sm font-medium hover:bg-gray-800 whitespace-nowrap"
                     >
                       Crear cuenta
                     </button>
                   </div>
                 ) : (
-                  <div className="relative">
+                  <div className="relative ml-auto">
                     <ProfileAvatar
                       name={userName}
                       onClick={() => setMenuOpen((o) => !o)}
@@ -112,7 +125,7 @@ export function MainView() {
                   </div>
                 )}
               </div>
-              <p className="text-base text-black">
+              <p className="text-sm md:text-base text-black">
                 {completedDayCount} de {totalDays} días completados · {yearProgress}% del año
               </p>
             </header>
@@ -132,9 +145,9 @@ export function MainView() {
               </div>
 
               {tab === "month" ? (
-                <MonthProgress selectedKey={selectedKey} onSelect={setSelectedKey} />
+                <MonthProgress selectedKey={selectedKey} onSelect={handleSelectDay} />
               ) : (
-                <YearProgress selectedKey={selectedKey} onSelect={setSelectedKey} />
+                <YearProgress selectedKey={selectedKey} onSelect={handleSelectDay} />
               )}
 
               <Legend />
@@ -143,14 +156,14 @@ export function MainView() {
             <QuoteSection onPickInspirations={() => setInspireModal(true)} />
 
             {isGuest && (
-              <div className="bg-warning border border-yellow-200 rounded-lg p-4 flex items-center justify-between">
+              <div className="bg-warning border border-yellow-200 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <p className="text-sm text-black">
                   <span className="font-medium">Tus metas y progreso no se guardarán.</span>{" "}
                   Crea una cuenta gratis para empezar.
                 </p>
                 <button
                   onClick={() => setAuthModal("signup")}
-                  className="bg-black text-white rounded-lg px-3 py-2 text-sm font-medium hover:bg-gray-800 shrink-0"
+                  className="bg-black text-white rounded-lg px-3 py-2 text-sm font-medium hover:bg-gray-800 shrink-0 self-start sm:self-auto"
                 >
                   Crear cuenta
                 </button>
@@ -159,10 +172,30 @@ export function MainView() {
           </div>
         </main>
 
-        <aside className="w-[400px] shrink-0 border-l border-line-strong/40 bg-white pl-8 pr-10 py-[60px] overflow-y-auto">
+        <aside className="hidden md:block w-[400px] shrink-0 border-l border-line-strong/40 bg-white pl-8 pr-10 py-[60px] overflow-y-auto">
           <GoalsPanel selectedKey={selectedKey} />
         </aside>
       </div>
+
+      {mobileGoalsOpen && (
+        <div className="md:hidden fixed inset-0 z-40">
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setMobileGoalsOpen(false)}
+          />
+          <div className="absolute inset-x-0 bottom-0 bg-white rounded-t-2xl shadow-2xl max-h-[85vh] overflow-y-auto px-6 pt-8 pb-10">
+            <button
+              type="button"
+              onClick={() => setMobileGoalsOpen(false)}
+              className="absolute top-3 right-3 text-muted hover:text-black p-1"
+              aria-label="Cerrar"
+            >
+              <X size={20} />
+            </button>
+            <GoalsPanel selectedKey={selectedKey} />
+          </div>
+        </div>
+      )}
 
       <MyProfileModal
         open={profileModal}

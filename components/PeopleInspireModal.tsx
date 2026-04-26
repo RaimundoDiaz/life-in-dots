@@ -80,7 +80,7 @@ export function PeopleInspireModal({ open, onClose }: Props) {
           <span className="text-black font-medium">{selected.length} seleccionados</span> de {PEOPLE.length}
         </p>
 
-        <div className="grid grid-cols-3 gap-3 overflow-y-auto pr-1">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto pr-1">
           {filtered.map((p) => {
             const active = selected.includes(p.id);
             return (
