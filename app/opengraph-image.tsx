@@ -42,7 +42,7 @@ export default function Image() {
             marginBottom: 40,
           }}
         >
-          Your {YEAR} in dots
+          {`Your ${YEAR} in dots`}
         </div>
         <div
           style={{
