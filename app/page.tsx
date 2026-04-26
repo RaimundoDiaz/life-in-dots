@@ -1,25 +1,20 @@
-"use client";
+import { AppRoot } from "@/components/AppRoot";
 
-import { useAppStore } from "@/lib/store";
-import { MainView } from "@/components/MainView";
-import { SupabaseSessionSync } from "@/components/SupabaseSessionSync";
+const YEAR = new Date().getFullYear();
 
 export default function Page() {
-  const hydrated = useAppStore((s) => s.hydrated);
-
-  if (!hydrated) {
-    return (
-      <>
-        <SupabaseSessionSync />
-        <div className="min-h-screen bg-white" />
-      </>
-    );
-  }
-
   return (
     <>
-      <SupabaseSessionSync />
-      <MainView />
+      <h1 className="sr-only">
+        Life in Dots — Visualiza tu {YEAR} en puntos y cumple tus metas diarias
+      </h1>
+      <p className="sr-only">
+        Life in Dots es una app gratuita que muestra cada día del año como un
+        punto. Pon hasta 3 metas diarias, marca lo cumplido y observa el
+        progreso de tu año de un vistazo. Disponible en español, inglés,
+        portugués, francés e italiano.
+      </p>
+      <AppRoot />
     </>
   );
 }
