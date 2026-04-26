@@ -1,6 +1,7 @@
 "use client";
 
 import { createClient } from "./supabase/client";
+import type { Locale } from "./i18n";
 import type { DayData } from "./store";
 
 export type RemoteProfile = {
@@ -10,12 +11,17 @@ export type RemoteProfile = {
   onboarding_done: boolean;
   inspirations_onboarded: boolean;
   selected_people: string[];
+  locale: Locale | null;
 };
 
 export type ProfilePatch = Partial<
   Pick<
     RemoteProfile,
-    "display_name" | "onboarding_done" | "inspirations_onboarded" | "selected_people"
+    | "display_name"
+    | "onboarding_done"
+    | "inspirations_onboarded"
+    | "selected_people"
+    | "locale"
   >
 >;
 
@@ -24,7 +30,7 @@ const sb = () => createClient();
 export async function loadProfile(userId: string): Promise<RemoteProfile> {
   const { data, error } = await sb()
     .from("profiles")
-    .select("id, display_name, member_since, onboarding_done, inspirations_onboarded, selected_people")
+    .select("id, display_name, member_since, onboarding_done, inspirations_onboarded, selected_people, locale")
     .eq("id", userId)
     .single();
   if (error) throw error;

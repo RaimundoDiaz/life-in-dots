@@ -2,27 +2,32 @@
 
 import { Modal } from "./Modal";
 import { useAppStore } from "@/lib/store";
-import { Check, Calendar, ChartLine } from "lucide-react";
+import { Check } from "lucide-react";
+import { YEAR } from "@/lib/dates";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   open: boolean;
 };
 
 export function OnboardingModal({ open }: Props) {
+  const t = useT();
   const step = useAppStore((s) => s.onboardingStep);
   const setStep = useAppStore((s) => s.setOnboardingStep);
   const finish = useAppStore((s) => s.finishOnboarding);
   const userName = useAppStore((s) => s.userName);
+
+  const namePart = userName ? `, ${userName.split(" ")[0]}` : "";
 
   const steps: { node: React.ReactNode }[] = [
     {
       node: (
         <Step
           icon={<span className="text-3xl">👋</span>}
-          title={`¡Bienvenida${userName ? `, ${userName.split(" ")[0]}` : ""}!`}
-          body="Vamos a hacer un recorrido rápido para que conozcas cómo usar tu calendario de 2026."
-          primaryLabel="Comenzar"
-          secondaryLabel="Saltar tutorial"
+          title={t("onboarding.welcome.title", { name: namePart })}
+          body={t("onboarding.welcome.body", { year: YEAR })}
+          primaryLabel={t("common.start")}
+          secondaryLabel={t("onboarding.welcome.skip")}
           onPrimary={() => setStep(1)}
           onSecondary={finish}
           stepIdx={0}
@@ -34,10 +39,10 @@ export function OnboardingModal({ open }: Props) {
       node: (
         <Step
           icon={<CalendarIcon />}
-          title="Este es tu calendario anual"
-          body="Cada punto representa un día de 2026. Al final del año, verás todos tus logros en un solo vistazo."
-          primaryLabel="Siguiente"
-          secondaryLabel="Atrás"
+          title={t("onboarding.calendar.title")}
+          body={t("onboarding.calendar.body", { year: YEAR })}
+          primaryLabel={t("common.next")}
+          secondaryLabel={t("common.back")}
           onPrimary={() => setStep(2)}
           onSecondary={() => setStep(0)}
           stepIdx={1}
@@ -53,15 +58,16 @@ export function OnboardingModal({ open }: Props) {
               <Check className="text-white" size={20} strokeWidth={3} />
             </span>
           }
-          title="Aquí defines tus metas diarias"
+          title={t("onboarding.goals.title")}
           body={
             <>
-              Agrega las metas para cada día y márcalas cuando las completes.<br />
-              Ejemplo: &ldquo;Hacer ejercicio 30 minutos&rdquo;
+              {t("onboarding.goals.body")}
+              <br />
+              {t("onboarding.goals.example")}
             </>
           }
-          primaryLabel="Siguiente"
-          secondaryLabel="Atrás"
+          primaryLabel={t("common.next")}
+          secondaryLabel={t("common.back")}
           onPrimary={() => setStep(3)}
           onSecondary={() => setStep(1)}
           stepIdx={2}
@@ -76,9 +82,9 @@ export function OnboardingModal({ open }: Props) {
       node: (
         <Step
           icon={null}
-          title="Tu perfil"
-          body="Aquí puedes editar tu información y elegir personas que te inspiran para recibir frases motivacionales."
-          primaryLabel="¡Comenzar!"
+          title={t("onboarding.profile.title")}
+          body={t("onboarding.profile.body")}
+          primaryLabel={t("onboarding.profile.cta")}
           onPrimary={finish}
           stepIdx={4}
           totalSteps={5}
@@ -175,22 +181,23 @@ function CalendarIcon() {
 }
 
 function DayStatesStep({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
-  const items: { color: string; ring?: string; title: string; subtitle: string }[] = [
-    { color: "bg-black", title: "Día cumplido", subtitle: "Completaste todas tus metas" },
-    { color: "bg-danger", title: "Día parcialmente cumplido", subtitle: "Completaste algunas metas" },
-    { color: "bg-white border-2 border-danger", title: "Día perdido", subtitle: "No cumpliste ninguna meta" },
-    { color: "bg-success", title: "Hoy", subtitle: "¡Aún puedes lograrlo!" },
+  const t = useT();
+  const items: { color: string; titleKey: string; subKey: string }[] = [
+    { color: "bg-black", titleKey: "onboarding.states.completed", subKey: "onboarding.states.completedSub" },
+    { color: "bg-danger", titleKey: "onboarding.states.partial", subKey: "onboarding.states.partialSub" },
+    { color: "bg-white border-2 border-danger", titleKey: "onboarding.states.missed", subKey: "onboarding.states.missedSub" },
+    { color: "bg-success", titleKey: "onboarding.states.today", subKey: "onboarding.states.todaySub" },
   ];
   return (
     <div className="p-8 flex flex-col gap-4">
-      <h3 className="font-serif text-2xl text-black text-center">Entiende tus días</h3>
+      <h3 className="font-serif text-2xl text-black text-center">{t("onboarding.dayStates.title")}</h3>
       <div className="flex flex-col gap-2 mt-2">
         {items.map((it, i) => (
           <div key={i} className="flex items-center gap-4 p-3 rounded-lg border border-line">
             <span className={`w-4 h-4 rounded-full ${it.color}`} />
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-black">{it.title}</span>
-              <span className="text-xs text-muted">{it.subtitle}</span>
+              <span className="text-sm font-medium text-black">{t(it.titleKey)}</span>
+              <span className="text-xs text-muted">{t(it.subKey)}</span>
             </div>
           </div>
         ))}
@@ -200,13 +207,13 @@ function DayStatesStep({ onNext, onBack }: { onNext: () => void; onBack: () => v
           onClick={onBack}
           className="flex-1 border border-line bg-white rounded-lg py-2.5 text-sm font-medium text-black hover:bg-surface"
         >
-          Atrás
+          {t("common.back")}
         </button>
         <button
           onClick={onNext}
           className="flex-1 bg-black text-white rounded-lg py-2.5 text-sm font-medium hover:bg-gray-800"
         >
-          Siguiente
+          {t("common.next")}
         </button>
       </div>
       <Dots step={3} total={5} />

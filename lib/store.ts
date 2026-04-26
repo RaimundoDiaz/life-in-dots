@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { dateKey } from "./dates";
+import type { Locale } from "./i18n";
 import {
   insertGoal,
   updateGoalDone,
@@ -34,6 +35,7 @@ export type ServerSnapshot = {
   selectedPeople: string[];
   inspirationsOnboarded: boolean;
   onboardingDone: boolean;
+  locale: Locale | null;
 };
 
 type AppState = {
@@ -52,6 +54,8 @@ type AppState = {
   selectedPeople: string[];
   inspirationsOnboarded: boolean;
 
+  locale: Locale | null;
+
   days: Record<string, DayData>;
 
   setGoogleSession: (
@@ -69,6 +73,7 @@ type AppState = {
   resetOnboarding: () => void;
 
   setSelectedPeople: (ids: string[]) => void;
+  setLocale: (locale: Locale) => void;
 
   addGoal: (key: string, text: string) => void;
   toggleGoal: (key: string, goalId: string) => void;
@@ -98,6 +103,8 @@ export const useAppStore = create<AppState>()(
       selectedPeople: ["michael-jordan"],
       inspirationsOnboarded: false,
 
+      locale: null,
+
       days: {},
 
       setGoogleSession: (userId, name, email, memberSince) =>
@@ -110,12 +117,13 @@ export const useAppStore = create<AppState>()(
         })),
 
       applyServerSnapshot: (snapshot) =>
-        set({
+        set((state) => ({
           days: snapshot.days,
           selectedPeople: snapshot.selectedPeople,
           inspirationsOnboarded: snapshot.inspirationsOnboarded,
           onboardingDone: snapshot.onboardingDone,
-        }),
+          locale: snapshot.locale ?? state.locale,
+        })),
 
       continueAsGuest: () =>
         set({
@@ -159,6 +167,14 @@ export const useAppStore = create<AppState>()(
             selected_people: ids,
             inspirations_onboarded: true,
           });
+        }
+      },
+
+      setLocale: (locale) => {
+        set({ locale });
+        const { authMode, userId } = get();
+        if (authMode === "google" && userId) {
+          upsertProfile(userId, { locale });
         }
       },
 

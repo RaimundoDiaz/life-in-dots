@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useAppStore } from "@/lib/store";
-import { dateKey, daysInYear, dayOfYear, YEAR } from "@/lib/dates";
+import { daysInYear, dayOfYear, YEAR } from "@/lib/dates";
+import { useT } from "@/lib/i18n";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { MonthProgress } from "./MonthProgress";
 import { YearProgress } from "./YearProgress";
@@ -16,10 +17,12 @@ import { PeopleInspireModal } from "./PeopleInspireModal";
 import { OnboardingModal } from "./OnboardingModal";
 import { AuthModal } from "./AuthModal";
 import { GuestSaveModal } from "./GuestSaveModal";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 type Tab = "month" | "year";
 
 export function MainView() {
+  const t = useT();
   const hydrated = useAppStore((s) => s.hydrated);
   const authMode = useAppStore((s) => s.authMode);
   const onboardingDone = useAppStore((s) => s.onboardingDone);
@@ -91,51 +94,58 @@ export function MainView() {
             <header className="flex flex-col gap-3">
               <div className="flex items-start justify-between gap-3 flex-wrap">
                 <h1 className="font-serif text-2xl md:text-[36px] text-black leading-tight">
-                  Tu {YEAR} en puntos
+                  {t("header.title", { year: YEAR })}
                 </h1>
-                {isGuest ? (
-                  <div className="flex items-center gap-2 ml-auto">
-                    <button
-                      onClick={() => setAuthModal("login")}
-                      className="flex items-center gap-1.5 border border-line rounded-lg px-2.5 py-2 text-xs md:text-sm font-medium text-black hover:bg-surface"
-                    >
-                      <GoogleG />
-                      <span className="hidden sm:inline">Iniciar sesión</span>
-                    </button>
-                    <button
-                      onClick={() => setAuthModal("signup")}
-                      className="bg-black text-white rounded-lg px-2.5 md:px-3 py-2 text-xs md:text-sm font-medium hover:bg-gray-800 whitespace-nowrap"
-                    >
-                      Crear cuenta
-                    </button>
-                  </div>
-                ) : (
-                  <div className="relative ml-auto">
-                    <ProfileAvatar
-                      name={userName}
-                      onClick={() => setMenuOpen((o) => !o)}
-                    />
-                    <ProfileMenu
-                      open={menuOpen}
-                      onClose={() => setMenuOpen(false)}
-                      onProfile={() => {
-                        setMenuOpen(false);
-                        setProfileModal(true);
-                      }}
-                      onInspire={() => {
-                        setMenuOpen(false);
-                        setInspireModal(true);
-                      }}
-                      onSignOut={() => {
-                        setMenuOpen(false);
-                        signOut();
-                      }}
-                    />
-                  </div>
-                )}
+                <div className="flex items-center gap-2 ml-auto">
+                  <LanguageSwitcher />
+                  {isGuest ? (
+                    <>
+                      <button
+                        onClick={() => setAuthModal("login")}
+                        className="flex items-center gap-1.5 border border-line rounded-lg px-2.5 py-2 text-xs md:text-sm font-medium text-black hover:bg-surface"
+                      >
+                        <GoogleG />
+                        <span className="hidden sm:inline">{t("header.signIn")}</span>
+                      </button>
+                      <button
+                        onClick={() => setAuthModal("signup")}
+                        className="bg-black text-white rounded-lg px-2.5 md:px-3 py-2 text-xs md:text-sm font-medium hover:bg-gray-800 whitespace-nowrap"
+                      >
+                        {t("header.signUp")}
+                      </button>
+                    </>
+                  ) : (
+                    <div className="relative">
+                      <ProfileAvatar
+                        name={userName}
+                        onClick={() => setMenuOpen((o) => !o)}
+                      />
+                      <ProfileMenu
+                        open={menuOpen}
+                        onClose={() => setMenuOpen(false)}
+                        onProfile={() => {
+                          setMenuOpen(false);
+                          setProfileModal(true);
+                        }}
+                        onInspire={() => {
+                          setMenuOpen(false);
+                          setInspireModal(true);
+                        }}
+                        onSignOut={() => {
+                          setMenuOpen(false);
+                          signOut();
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
               <p className="text-sm md:text-base text-black">
-                {completedDayCount} de {totalDays} días completados · {yearProgress}% del año
+                {t("header.subtitle", {
+                  completed: completedDayCount,
+                  total: totalDays,
+                  percent: yearProgress,
+                })}
               </p>
             </header>
 
@@ -144,12 +154,12 @@ export function MainView() {
                 <Tab
                   active={tab === "month"}
                   onClick={() => setTab("month")}
-                  label="Tu progreso"
+                  label={t("tabs.month")}
                 />
                 <Tab
                   active={tab === "year"}
                   onClick={() => setTab("year")}
-                  label="Año completo"
+                  label={t("tabs.year")}
                 />
               </div>
 
@@ -167,14 +177,14 @@ export function MainView() {
             {isGuest && (
               <div className="bg-warning border border-yellow-200 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <p className="text-sm text-black">
-                  <span className="font-medium">Tus metas y progreso no se guardarán.</span>{" "}
-                  Crea una cuenta gratis para empezar.
+                  <span className="font-medium">{t("guestBanner.message")}</span>{" "}
+                  {t("guestBanner.suffix")}
                 </p>
                 <button
                   onClick={() => setAuthModal("signup")}
                   className="bg-black text-white rounded-lg px-3 py-2 text-sm font-medium hover:bg-gray-800 shrink-0 self-start sm:self-auto"
                 >
-                  Crear cuenta
+                  {t("guestBanner.cta")}
                 </button>
               </div>
             )}
@@ -210,7 +220,7 @@ export function MainView() {
             type="button"
             onClick={() => setMobileGoalsOpen(false)}
             className="absolute top-3 right-3 text-muted hover:text-black p-1"
-            aria-label="Cerrar"
+            aria-label={t("common.close")}
           >
             <X size={20} />
           </button>

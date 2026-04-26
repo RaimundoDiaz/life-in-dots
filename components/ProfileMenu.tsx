@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   open: boolean;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export function ProfileMenu({ open, onClose, onProfile, onInspire, onSignOut, showSignOut = true }: Props) {
+  const t = useT();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,14 +44,14 @@ export function ProfileMenu({ open, onClose, onProfile, onInspire, onSignOut, sh
         onClick={onProfile}
         className="w-full text-left px-4 py-2 text-sm text-black hover:bg-surface transition-colors"
       >
-        Mi perfil
+        {t("menu.profile")}
       </button>
       <button
         type="button"
         onClick={onInspire}
         className="w-full text-left px-4 py-2 text-sm text-black hover:bg-surface transition-colors"
       >
-        Personas que me inspiran
+        {t("menu.inspire")}
       </button>
       {showSignOut && (
         <>
@@ -59,7 +61,7 @@ export function ProfileMenu({ open, onClose, onProfile, onInspire, onSignOut, sh
             onClick={onSignOut}
             className="w-full text-left px-4 py-2 text-sm text-danger hover:bg-surface transition-colors"
           >
-            Cerrar sesión
+            {t("menu.signOut")}
           </button>
         </>
       )}

@@ -1,29 +1,6 @@
+import type { Locale } from "./i18n";
+
 export const YEAR = 2026;
-
-export const MONTH_NAMES_ES = [
-  "Enero",
-  "Febrero",
-  "Marzo",
-  "Abril",
-  "Mayo",
-  "Junio",
-  "Julio",
-  "Agosto",
-  "Septiembre",
-  "Octubre",
-  "Noviembre",
-  "Diciembre",
-];
-
-export const WEEKDAY_NAMES_ES = [
-  "Domingo",
-  "Lunes",
-  "Martes",
-  "Miércoles",
-  "Jueves",
-  "Viernes",
-  "Sábado",
-];
 
 export function isLeapYear(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
@@ -52,15 +29,27 @@ export function parseDateKey(key: string): { year: number; month: number; day: n
   return { year: y, month: m - 1, day: d };
 }
 
-export function formatLongDate(date: Date): string {
-  const weekday = WEEKDAY_NAMES_ES[date.getDay()];
-  const day = date.getDate();
-  const month = MONTH_NAMES_ES[date.getMonth()];
-  return `${weekday} ${day} de ${month}`;
+function intlLocale(locale: Locale): string {
+  return locale === "es" ? "es-ES" : "en-US";
 }
 
-export function formatShortMonthDay(date: Date): string {
-  const day = date.getDate();
-  const month = MONTH_NAMES_ES[date.getMonth()].toLowerCase();
-  return `${day} de ${month} de ${date.getFullYear()}`;
+export function getMonthName(monthIdx: number, locale: Locale): string {
+  const sample = new Date(2026, monthIdx, 1);
+  return new Intl.DateTimeFormat(intlLocale(locale), { month: "long" }).format(sample);
+}
+
+export function formatLongDate(date: Date, locale: Locale): string {
+  return new Intl.DateTimeFormat(intlLocale(locale), {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  }).format(date);
+}
+
+export function formatShortMonthDay(date: Date, locale: Locale): string {
+  return new Intl.DateTimeFormat(intlLocale(locale), {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(date);
 }

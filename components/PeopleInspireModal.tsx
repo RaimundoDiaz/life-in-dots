@@ -4,7 +4,8 @@ import { useMemo, useState } from "react";
 import { X } from "lucide-react";
 import { Modal } from "./Modal";
 import { useAppStore } from "@/lib/store";
-import { PEOPLE, PEOPLE_CATEGORIES, PersonCategory } from "@/lib/people";
+import { PEOPLE, PEOPLE_CATEGORIES, ROLE_KEY, type PersonCategory } from "@/lib/people";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   open: boolean;
@@ -12,14 +13,15 @@ type Props = {
 };
 
 export function PeopleInspireModal({ open, onClose }: Props) {
+  const t = useT();
   const initial = useAppStore((s) => s.selectedPeople);
   const setSelected = useAppStore((s) => s.setSelectedPeople);
 
   const [selected, setLocalSelected] = useState<string[]>(initial);
-  const [activeCat, setActiveCat] = useState<PersonCategory | "Todos">("Todos");
+  const [activeCat, setActiveCat] = useState<PersonCategory | "all">("all");
 
   const filtered = useMemo(() => {
-    if (activeCat === "Todos") return PEOPLE;
+    if (activeCat === "all") return PEOPLE;
     return PEOPLE.filter((p) => p.role === activeCat);
   }, [activeCat]);
 
@@ -35,7 +37,7 @@ export function PeopleInspireModal({ open, onClose }: Props) {
   }
 
   const counts: Record<string, number> = {
-    Todos: PEOPLE.length,
+    all: PEOPLE.length,
   };
   for (const p of PEOPLE) {
     counts[p.role] = (counts[p.role] ?? 0) + 1;
@@ -46,12 +48,10 @@ export function PeopleInspireModal({ open, onClose }: Props) {
       <div className="p-6 flex flex-col gap-4 max-h-[80vh]">
         <div className="flex items-start justify-between">
           <div className="flex flex-col gap-1">
-            <h3 className="font-serif text-2xl text-black">Personas que me inspiran</h3>
-            <p className="text-sm text-muted">
-              Selecciona de quiénes te gustaría recibir frases motivacionales
-            </p>
+            <h3 className="font-serif text-2xl text-black">{t("inspire.title")}</h3>
+            <p className="text-sm text-muted">{t("inspire.subtitle")}</p>
           </div>
-          <button onClick={onClose} className="text-muted hover:text-black mt-1">
+          <button onClick={onClose} className="text-muted hover:text-black mt-1" aria-label={t("common.close")}>
             <X size={20} />
           </button>
         </div>
@@ -70,14 +70,16 @@ export function PeopleInspireModal({ open, onClose }: Props) {
                     : "bg-white text-black border-line hover:border-black"
                 }`}
               >
-                {c.label} <span className={isActive ? "opacity-70" : "text-muted"}>{counts[c.value] ?? 0}</span>
+                {t(c.i18nKey)}{" "}
+                <span className={isActive ? "opacity-70" : "text-muted"}>{counts[c.value] ?? 0}</span>
               </button>
             );
           })}
         </div>
 
         <p className="text-sm text-muted">
-          <span className="text-black font-medium">{selected.length} seleccionados</span> de {PEOPLE.length}
+          <span className="text-black font-medium">{t("inspire.selectedCount", { n: selected.length })}</span>{" "}
+          {t("inspire.ofTotal", { total: PEOPLE.length })}
         </p>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto pr-1">
@@ -102,7 +104,7 @@ export function PeopleInspireModal({ open, onClose }: Props) {
                   <span className="text-sm font-medium text-black text-center leading-tight">
                     {p.name}
                   </span>
-                  <span className="text-xs text-muted">{p.role}</span>
+                  <span className="text-xs text-muted">{t(ROLE_KEY[p.role])}</span>
                 </div>
               </button>
             );
@@ -114,7 +116,7 @@ export function PeopleInspireModal({ open, onClose }: Props) {
           onClick={save}
           className="w-full bg-black text-white rounded-lg py-3 font-medium text-sm hover:bg-gray-800 transition-colors"
         >
-          Guardar selección
+          {t("inspire.save")}
         </button>
       </div>
     </Modal>

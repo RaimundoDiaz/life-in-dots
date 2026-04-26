@@ -1,8 +1,9 @@
 "use client";
 
-import { dateKey, daysInMonth, MONTH_NAMES_ES, YEAR } from "@/lib/dates";
+import { dateKey, daysInMonth, getMonthName, YEAR } from "@/lib/dates";
 import { computeDayState } from "@/lib/dayState";
 import { useAppStore } from "@/lib/store";
+import { useLocale } from "@/lib/i18n";
 import { DayDot } from "./DayDot";
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
 
 export function MonthProgress({ selectedKey, onSelect }: Props) {
   const days = useAppStore((s) => s.days);
+  const locale = useLocale();
   const today = new Date();
   const todayMonth = today.getMonth();
   const todayDay = today.getDate();
@@ -50,7 +52,7 @@ export function MonthProgress({ selectedKey, onSelect }: Props) {
                     state={state}
                     onClick={() => onSelect(key)}
                     active={selectedKey === key}
-                    title={`${day} de ${MONTH_NAMES_ES[monthIdx]}`}
+                    title={`${day} ${getMonthName(monthIdx, locale)}`}
                   />
                 );
               })}

@@ -2,13 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useAppStore } from "@/lib/store";
-import { getRandomQuote, getPersonById } from "@/lib/people";
+import { getPersonById } from "@/lib/people";
+import { useLocale, useT } from "@/lib/i18n";
 
 type Props = {
   onPickInspirations: () => void;
 };
 
 export function QuoteSection({ onPickInspirations }: Props) {
+  const t = useT();
+  const locale = useLocale();
   const selectedPeople = useAppStore((s) => s.selectedPeople);
   const hydrated = useAppStore((s) => s.hydrated);
   const [quote, setQuote] = useState<{ text: string; person: string } | null>(null);
@@ -27,8 +30,8 @@ export function QuoteSection({ onPickInspirations }: Props) {
     for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
     const person = persons[hash % persons.length];
     const q = person.quotes[hash % person.quotes.length];
-    setQuote({ text: q.text, person: person.name });
-  }, [selectedPeople, hydrated]);
+    setQuote({ text: q.text[locale], person: person.name });
+  }, [selectedPeople, hydrated, locale]);
 
   if (!quote) return null;
 
@@ -43,7 +46,7 @@ export function QuoteSection({ onPickInspirations }: Props) {
         onClick={onPickInspirations}
         className="text-xs text-black hover:underline self-start"
       >
-        Elige de quien te gustaría recibir motivación →
+        {t("quote.pickInspirations")}
       </button>
     </div>
   );

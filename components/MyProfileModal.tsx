@@ -5,6 +5,7 @@ import { Modal } from "./Modal";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { useAppStore } from "@/lib/store";
 import { formatShortMonthDay } from "@/lib/dates";
+import { useLocale, useT } from "@/lib/i18n";
 
 type Props = {
   open: boolean;
@@ -13,6 +14,8 @@ type Props = {
 };
 
 export function MyProfileModal({ open, onClose, onSignOut }: Props) {
+  const t = useT();
+  const locale = useLocale();
   const userName = useAppStore((s) => s.userName);
   const userEmail = useAppStore((s) => s.userEmail);
   const memberSince = useAppStore((s) => s.memberSince);
@@ -22,8 +25,8 @@ export function MyProfileModal({ open, onClose, onSignOut }: Props) {
     <Modal open={open} onClose={onClose} width={400}>
       <div className="p-6 flex flex-col gap-6">
         <div className="flex items-center justify-between">
-          <h3 className="font-serif text-2xl text-black">Mi perfil</h3>
-          <button onClick={onClose} className="text-muted hover:text-black">
+          <h3 className="font-serif text-2xl text-black">{t("profile.title")}</h3>
+          <button onClick={onClose} className="text-muted hover:text-black" aria-label={t("common.close")}>
             <X size={20} />
           </button>
         </div>
@@ -31,7 +34,7 @@ export function MyProfileModal({ open, onClose, onSignOut }: Props) {
         <div className="flex items-center gap-4">
           <ProfileAvatar name={userName} size={56} />
           <div className="flex flex-col">
-            <span className="font-medium text-base text-black">{userName ?? "Invitado"}</span>
+            <span className="font-medium text-base text-black">{userName ?? t("profile.guest")}</span>
             {userEmail && <span className="text-sm text-muted">{userEmail}</span>}
           </div>
         </div>
@@ -39,7 +42,7 @@ export function MyProfileModal({ open, onClose, onSignOut }: Props) {
         <div className="border-t border-line pt-4 flex flex-col gap-4">
           {authMode === "google" && (
             <div className="flex flex-col gap-2">
-              <span className="text-xs text-muted uppercase tracking-wide">Cuenta conectada</span>
+              <span className="text-xs text-muted uppercase tracking-wide">{t("profile.connectedAccount")}</span>
               <div className="flex items-center gap-2">
                 <GoogleG />
                 <span className="text-sm text-black">Google</span>
@@ -49,9 +52,9 @@ export function MyProfileModal({ open, onClose, onSignOut }: Props) {
 
           {memberSince && (
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-muted uppercase tracking-wide">Miembro desde</span>
+              <span className="text-xs text-muted uppercase tracking-wide">{t("profile.memberSince")}</span>
               <span className="text-sm text-black">
-                {formatShortMonthDay(new Date(memberSince))}
+                {formatShortMonthDay(new Date(memberSince), locale)}
               </span>
             </div>
           )}
@@ -62,7 +65,7 @@ export function MyProfileModal({ open, onClose, onSignOut }: Props) {
           onClick={onSignOut}
           className="w-full border border-danger text-danger rounded-lg py-3 font-medium text-sm hover:bg-red-50 transition-colors"
         >
-          Cerrar sesión
+          {t("profile.signOut")}
         </button>
       </div>
     </Modal>

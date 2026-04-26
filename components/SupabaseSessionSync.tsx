@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useAppStore } from "@/lib/store";
 import { createClient } from "@/lib/supabase/client";
+import { detectBrowserLocale, isLocale } from "@/lib/i18n";
 import {
   loadProfile,
   loadGoals,
@@ -20,6 +21,12 @@ function deriveName(u: Session["user"]): string {
 }
 
 export function SupabaseSessionSync() {
+  useEffect(() => {
+    // Auto-detect locale on first load (guest or pre-session) if none yet.
+    const current = useAppStore.getState().locale;
+    if (!current) useAppStore.getState().setLocale(detectBrowserLocale());
+  }, []);
+
   useEffect(() => {
     const supabase = createClient();
     let cancelled = false;
@@ -54,6 +61,8 @@ export function SupabaseSessionSync() {
 
         const dbHasGoals = Object.keys(remoteDays).length > 0;
         const guestHasGoals = guestDays && Object.keys(guestDays).length > 0;
+        const localLocale = prev.locale;
+        const profileLocale = isLocale(profile.locale) ? profile.locale : null;
 
         if (!dbHasGoals && (guestHasGoals || guestPeople)) {
           // First sign-in for this user — push their guest data up.
@@ -65,6 +74,8 @@ export function SupabaseSessionSync() {
             inspirations_onboarded: guestPeople != null,
             // Migrated guests have already learned the app.
             onboarding_done: true,
+            // Persist whatever locale they were already using as a guest.
+            locale: localLocale ?? profileLocale ?? null,
           });
           if (cancelled) return;
           const [freshProfile, freshDays] = await Promise.all([
@@ -77,6 +88,7 @@ export function SupabaseSessionSync() {
             selectedPeople: freshProfile.selected_people,
             inspirationsOnboarded: freshProfile.inspirations_onboarded,
             onboardingDone: freshProfile.onboarding_done,
+            locale: isLocale(freshProfile.locale) ? freshProfile.locale : null,
           });
         } else {
           useAppStore.getState().applyServerSnapshot({
@@ -84,6 +96,7 @@ export function SupabaseSessionSync() {
             selectedPeople: profile.selected_people,
             inspirationsOnboarded: profile.inspirations_onboarded,
             onboardingDone: profile.onboarding_done,
+            locale: profileLocale,
           });
         }
       } catch (e) {

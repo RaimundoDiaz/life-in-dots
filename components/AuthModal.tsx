@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Modal } from "./Modal";
 import { createClient } from "@/lib/supabase/client";
+import { useT } from "@/lib/i18n";
+import { YEAR } from "@/lib/dates";
 
 type Props = {
   open: boolean;
@@ -12,8 +14,12 @@ type Props = {
 };
 
 export function AuthModal({ open, mode, onClose, onSwitch }: Props) {
+  const t = useT();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const termsText = t("auth.terms");
+  const termsParts = termsText.split(/\[([^\]]+)\]/g);
 
   async function handleGoogle() {
     setLoading(true);
@@ -37,11 +43,11 @@ export function AuthModal({ open, mode, onClose, onSwitch }: Props) {
       <div className="p-8 flex flex-col gap-5 items-center text-center">
         <DotIcon />
         <div className="flex flex-col gap-1">
-          <h2 className="font-serif text-2xl text-black">Tu 2026 en puntos</h2>
+          <h2 className="font-serif text-2xl text-black">
+            {t("header.title", { year: YEAR })}
+          </h2>
           <p className="text-sm text-muted">
-            {mode === "signup"
-              ? "Transforma tus días en logros. Define tus metas diarias y visualiza tu progreso en un año."
-              : "Transforma tus días en logros"}
+            {mode === "signup" ? t("auth.subtitleSignup") : t("auth.subtitleLogin")}
           </p>
         </div>
 
@@ -57,30 +63,36 @@ export function AuthModal({ open, mode, onClose, onSwitch }: Props) {
         >
           <GoogleG color={mode === "signup" ? "white" : undefined} />
           {loading
-            ? "Redirigiendo a Google..."
+            ? t("auth.redirecting")
             : mode === "signup"
-            ? "Crear cuenta con Google"
-            : "Inicia sesión con Google"}
+            ? t("auth.googleSignup")
+            : t("auth.googleLogin")}
         </button>
 
         {error && <p className="text-[11px] text-red-600">{error}</p>}
 
         {mode === "signup" && (
           <p className="text-[11px] text-muted">
-            Al continuar, aceptas nuestros{" "}
-            <span className="underline">Términos de uso</span> y{" "}
-            <span className="underline">Política de privacidad</span>
+            {termsParts.map((part, i) =>
+              i % 2 === 1 ? (
+                <span key={i} className="underline">
+                  {part}
+                </span>
+              ) : (
+                <span key={i}>{part}</span>
+              )
+            )}
           </p>
         )}
 
         <p className="text-sm text-black">
-          {mode === "signup" ? "¿Ya tienes cuenta? " : "¿No tienes cuenta? "}
+          {mode === "signup" ? `${t("auth.haveAccount")} ` : `${t("auth.noAccount")} `}
           <button
             type="button"
             onClick={() => onSwitch(mode === "signup" ? "login" : "signup")}
             className="underline font-medium"
           >
-            {mode === "signup" ? "Inicia sesión" : "Regístrate"}
+            {mode === "signup" ? t("auth.signIn") : t("auth.signUp")}
           </button>
         </p>
       </div>

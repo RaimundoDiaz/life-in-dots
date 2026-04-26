@@ -4,6 +4,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import { useAppStore } from "@/lib/store";
 import { formatLongDate, dayOfYear, daysInYear, YEAR, parseDateKey } from "@/lib/dates";
+import { useLocale, useT } from "@/lib/i18n";
 import { Checklist } from "./Checklist";
 
 type Props = {
@@ -11,6 +12,8 @@ type Props = {
 };
 
 export function GoalsPanel({ selectedKey }: Props) {
+  const t = useT();
+  const locale = useLocale();
   const days = useAppStore((s) => s.days);
   const addGoal = useAppStore((s) => s.addGoal);
   const toggleGoal = useAppStore((s) => s.toggleGoal);
@@ -31,7 +34,8 @@ export function GoalsPanel({ selectedKey }: Props) {
   const dayData = days[selectedKey];
   const goals = dayData?.goals ?? [];
 
-  const dateLabel = isToday ? `Hoy · ${formatLongDate(date)}` : formatLongDate(date);
+  const longDate = formatLongDate(date, locale);
+  const dateLabel = isToday ? `${t("goals.todayPrefix")} · ${longDate}` : longDate;
   const doy = dayOfYear(date);
   const totalDays = daysInYear(YEAR);
 
@@ -52,13 +56,13 @@ export function GoalsPanel({ selectedKey }: Props) {
         <div className="flex items-center gap-1">
           <span className="block w-[30px] h-px bg-black" />
           <span className="text-sm text-black">
-            Día {doy} de {totalDays}
+            {t("goals.dayOfYear", { n: doy, total: totalDays })}
           </span>
         </div>
       </div>
 
       <div className="flex flex-col gap-6 w-full">
-        <h3 className="font-medium text-base text-black">Metas del día</h3>
+        <h3 className="font-medium text-base text-black">{t("goals.heading")}</h3>
 
         {goals.length > 0 && (
           <div className="flex flex-col gap-3 w-full">
@@ -84,7 +88,7 @@ export function GoalsPanel({ selectedKey }: Props) {
                   type="button"
                   onClick={() => removeGoal(selectedKey, g.id)}
                   className="text-muted hover:text-black transition-opacity p-1 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100"
-                  aria-label="Eliminar meta"
+                  aria-label={t("goals.deleteAria")}
                 >
                   <X size={14} />
                 </button>
@@ -107,7 +111,7 @@ export function GoalsPanel({ selectedKey }: Props) {
                   setAdding(false);
                 }
               }}
-              placeholder={isPast ? "Agrega una meta para este día" : "Agrega una meta para hoy"}
+              placeholder={isPast ? t("goals.placeholderPast") : t("goals.placeholderToday")}
               className="w-full bg-surface border border-line rounded-lg px-3 py-2 text-sm text-black placeholder:text-muted focus:outline-none focus:border-black transition-colors"
             />
             {(adding || draft) && (
@@ -120,7 +124,7 @@ export function GoalsPanel({ selectedKey }: Props) {
                   }}
                   className="bg-white border border-line rounded-lg px-6 py-2 text-sm font-medium text-muted hover:bg-surface transition-colors"
                 >
-                  Cancelar
+                  {t("common.cancel")}
                 </button>
                 <button
                   type="button"
@@ -132,7 +136,7 @@ export function GoalsPanel({ selectedKey }: Props) {
                       : "bg-black/30 cursor-not-allowed"
                   }`}
                 >
-                  Agregar
+                  {t("common.add")}
                 </button>
               </div>
             )}
