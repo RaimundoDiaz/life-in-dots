@@ -30,7 +30,18 @@ export function parseDateKey(key: string): { year: number; month: number; day: n
 }
 
 function intlLocale(locale: Locale): string {
-  return locale === "es" ? "es-ES" : "en-US";
+  switch (locale) {
+    case "es":
+      return "es-ES";
+    case "en":
+      return "en-US";
+    case "pt":
+      return "pt-PT";
+    case "fr":
+      return "fr-FR";
+    case "it":
+      return "it-IT";
+  }
 }
 
 export function getMonthName(monthIdx: number, locale: Locale): string {

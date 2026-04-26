@@ -32,6 +32,9 @@ export function LanguageSwitcher() {
   const labelKey: Record<Locale, string> = {
     es: "lang.spanish",
     en: "lang.english",
+    pt: "lang.portuguese",
+    fr: "lang.french",
+    it: "lang.italian",
   };
 
   return (
