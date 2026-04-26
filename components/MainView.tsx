@@ -177,25 +177,34 @@ export function MainView() {
         </aside>
       </div>
 
-      {mobileGoalsOpen && (
-        <div className="md:hidden fixed inset-0 z-40">
-          <div
-            className="absolute inset-0 bg-black/40"
+      <div
+        className={`md:hidden fixed inset-0 z-40 ${
+          mobileGoalsOpen ? "" : "pointer-events-none"
+        }`}
+        aria-hidden={!mobileGoalsOpen}
+      >
+        <div
+          className={`absolute inset-0 bg-black/40 transition-opacity duration-200 ${
+            mobileGoalsOpen ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={() => setMobileGoalsOpen(false)}
+        />
+        <div
+          className={`absolute inset-x-0 bottom-0 bg-white rounded-t-2xl shadow-2xl max-h-[85vh] overflow-y-auto px-6 pt-8 pb-10 transition-transform duration-300 ease-out ${
+            mobileGoalsOpen ? "translate-y-0" : "translate-y-full"
+          }`}
+        >
+          <button
+            type="button"
             onClick={() => setMobileGoalsOpen(false)}
-          />
-          <div className="absolute inset-x-0 bottom-0 bg-white rounded-t-2xl shadow-2xl max-h-[85vh] overflow-y-auto px-6 pt-8 pb-10">
-            <button
-              type="button"
-              onClick={() => setMobileGoalsOpen(false)}
-              className="absolute top-3 right-3 text-muted hover:text-black p-1"
-              aria-label="Cerrar"
-            >
-              <X size={20} />
-            </button>
-            <GoalsPanel selectedKey={selectedKey} />
-          </div>
+            className="absolute top-3 right-3 text-muted hover:text-black p-1"
+            aria-label="Cerrar"
+          >
+            <X size={20} />
+          </button>
+          <GoalsPanel selectedKey={selectedKey} />
         </div>
-      )}
+      </div>
 
       <MyProfileModal
         open={profileModal}

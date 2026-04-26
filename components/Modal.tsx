@@ -24,11 +24,11 @@ export function Modal({ open, onClose, children, width = 360, closeOnBackdrop = 
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-6"
+      className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-6 animate-backdrop-fade-in"
       onClick={() => closeOnBackdrop && onClose?.()}
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full"
+        className="bg-white rounded-2xl shadow-2xl w-full animate-modal-pop-in"
         style={{ maxWidth: width }}
         onClick={(e) => e.stopPropagation()}
       >
