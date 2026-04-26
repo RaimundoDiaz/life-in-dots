@@ -42,7 +42,7 @@ export function GoalsPanel({ selectedKey }: Props) {
   const canAdd = !isFuture;
 
   function handleAdd() {
-    const text = draft.trim();
+    const text = draft.trim().slice(0, 200);
     if (!text) return;
     addGoal(selectedKey, text);
     setDraft("");
@@ -102,6 +102,7 @@ export function GoalsPanel({ selectedKey }: Props) {
             <input
               type="text"
               value={draft}
+              maxLength={140}
               onChange={(e) => setDraft(e.target.value)}
               onFocus={() => setAdding(true)}
               onKeyDown={(e) => {

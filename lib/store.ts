@@ -83,8 +83,6 @@ type AppState = {
   getTodayKey: () => string;
 };
 
-const TODAY = new Date();
-
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
@@ -254,7 +252,10 @@ export const useAppStore = create<AppState>()(
         return count;
       },
 
-      getTodayKey: () => dateKey(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate()),
+      getTodayKey: () => {
+        const now = new Date();
+        return dateKey(now.getFullYear(), now.getMonth(), now.getDate());
+      },
     }),
     {
       name: "life-in-dots-store",
