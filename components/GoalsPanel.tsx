@@ -18,7 +18,6 @@ export function GoalsPanel({ selectedKey }: Props) {
 
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState("");
-  const [hoveredGoal, setHoveredGoal] = useState<string | null>(null);
 
   const todayKey = useAppStore((s) => s.getTodayKey());
   const isToday = selectedKey === todayKey;
@@ -66,11 +65,7 @@ export function GoalsPanel({ selectedKey }: Props) {
             {goals.map((g) => (
               <div
                 key={g.id}
-                className={`flex items-center justify-between p-1 rounded transition-colors ${
-                  hoveredGoal === g.id ? "bg-surface" : ""
-                }`}
-                onMouseEnter={() => setHoveredGoal(g.id)}
-                onMouseLeave={() => setHoveredGoal(null)}
+                className="group flex items-center justify-between p-1 rounded transition-colors hover:bg-surface"
               >
                 <div className="flex items-center gap-2.5">
                   <Checklist
@@ -85,16 +80,14 @@ export function GoalsPanel({ selectedKey }: Props) {
                     {g.text}
                   </span>
                 </div>
-                {hoveredGoal === g.id && (
-                  <button
-                    type="button"
-                    onClick={() => removeGoal(selectedKey, g.id)}
-                    className="text-muted hover:text-black transition-colors p-1"
-                    aria-label="Eliminar meta"
-                  >
-                    <X size={14} />
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={() => removeGoal(selectedKey, g.id)}
+                  className="text-muted hover:text-black transition-opacity p-1 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100"
+                  aria-label="Eliminar meta"
+                >
+                  <X size={14} />
+                </button>
               </div>
             ))}
           </div>

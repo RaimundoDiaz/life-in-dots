@@ -60,6 +60,15 @@ export function MainView() {
     }
   }, [isGuest, todayGoalsCount]);
 
+  useEffect(() => {
+    if (!mobileGoalsOpen) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [mobileGoalsOpen]);
+
   function handleSelectDay(key: string) {
     setSelectedKey(key);
     if (
@@ -190,10 +199,13 @@ export function MainView() {
           onClick={() => setMobileGoalsOpen(false)}
         />
         <div
-          className={`absolute inset-x-0 bottom-0 bg-white rounded-t-2xl shadow-2xl max-h-[85vh] overflow-y-auto px-6 pt-8 pb-10 transition-transform duration-300 ease-out ${
+          className={`absolute inset-x-0 bottom-0 bg-white rounded-t-2xl shadow-2xl max-h-[85vh] overflow-y-auto px-6 pt-3 pb-10 transition-transform duration-300 ease-out ${
             mobileGoalsOpen ? "translate-y-0" : "translate-y-full"
           }`}
         >
+          <div className="flex justify-center pb-4">
+            <div className="w-10 h-1 rounded-full bg-line-soft" />
+          </div>
           <button
             type="button"
             onClick={() => setMobileGoalsOpen(false)}
