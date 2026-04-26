@@ -72,8 +72,6 @@ export function SupabaseSessionSync() {
           await upsertProfile(u.id, {
             selected_people: guestPeople ?? profile.selected_people,
             inspirations_onboarded: guestPeople != null,
-            // Migrated guests have already learned the app.
-            onboarding_done: true,
             // Persist whatever locale they were already using as a guest.
             locale: localLocale ?? profileLocale ?? null,
           });
