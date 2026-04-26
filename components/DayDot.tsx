@@ -24,7 +24,7 @@ export function DayDot({ state, onClick, active, title }: Props) {
       type="button"
       title={title}
       onClick={onClick}
-      className={`shrink-0 rounded-full border w-1.5 h-1.5 md:w-2 md:h-2 ${STATE_CLASS[state]} transition-all ${
+      className={`shrink-0 rounded-full border w-1.5 h-1.5 md:w-2 md:h-2 2xl:w-2.5 2xl:h-2.5 3xl:w-3 3xl:h-3 ${STATE_CLASS[state]} transition-all ${
         onClick ? "hover:scale-125 active:scale-90 cursor-pointer" : "cursor-default"
       } ${active ? "ring-2 ring-black ring-offset-1" : ""}`}
     />

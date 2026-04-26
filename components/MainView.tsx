@@ -89,11 +89,11 @@ export function MainView() {
   return (
     <div className="min-h-screen bg-white relative">
       <div className="flex flex-col md:flex-row md:h-screen">
-        <main className="flex-1 md:overflow-y-auto px-5 pt-8 pb-12 md:pl-[60px] md:pr-[40px] md:py-[60px]">
-          <div className="flex flex-col gap-10 md:gap-[60px] max-w-[820px]">
+        <main className="flex-1 md:overflow-y-auto px-5 pt-8 pb-12 md:pl-[60px] md:pr-[40px] md:py-[60px] 2xl:pl-[80px] 2xl:pr-[56px] 2xl:py-[80px] 3xl:pl-[120px] 3xl:pr-[80px] 3xl:py-[100px]">
+          <div className="flex flex-col gap-10 md:gap-[60px] 2xl:gap-[72px] 3xl:gap-[88px] max-w-[820px] 2xl:max-w-[880px] 3xl:max-w-[1020px]">
             <header className="flex flex-col gap-3">
               <div className="flex items-start justify-between gap-3 flex-wrap">
-                <h1 className="font-serif text-2xl md:text-[36px] text-black leading-tight">
+                <h1 className="font-serif text-2xl md:text-[36px] 2xl:text-[44px] 3xl:text-[52px] text-black leading-tight">
                   {t("header.title", { year: YEAR })}
                 </h1>
                 <div className="flex items-center gap-2 ml-auto">
@@ -140,7 +140,7 @@ export function MainView() {
                   )}
                 </div>
               </div>
-              <p className="text-sm md:text-base text-black">
+              <p className="text-sm md:text-base 2xl:text-lg 3xl:text-xl text-black">
                 {t("header.subtitle", {
                   completed: completedDayCount,
                   total: totalDays,
@@ -191,7 +191,7 @@ export function MainView() {
           </div>
         </main>
 
-        <aside className="hidden md:block w-[400px] shrink-0 border-l border-line-strong/40 bg-white pl-8 pr-10 py-[60px] overflow-y-auto">
+        <aside className="hidden md:block w-[400px] 2xl:w-[480px] 3xl:w-[560px] shrink-0 border-l border-line-strong/40 bg-white pl-8 pr-10 py-[60px] 2xl:pl-10 2xl:pr-12 2xl:py-[80px] 3xl:pl-14 3xl:pr-16 3xl:py-[100px] overflow-y-auto">
           <GoalsPanel selectedKey={selectedKey} />
         </aside>
       </div>
@@ -273,7 +273,7 @@ function Tab({ active, onClick, label }: { active: boolean; onClick: () => void;
     <button
       type="button"
       onClick={onClick}
-      className={`pb-1.5 px-1.5 text-[13px] font-medium transition-colors relative ${
+      className={`pb-1.5 px-1.5 text-[13px] 2xl:text-[15px] 3xl:text-[17px] font-medium transition-colors relative ${
         active ? "text-black" : "text-muted hover:text-black"
       }`}
     >

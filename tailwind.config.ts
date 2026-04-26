@@ -4,6 +4,10 @@ const config: Config = {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
+      screens: {
+        "2xl": "1400px",
+        "3xl": "1920px",
+      },
       fontFamily: {
         serif: ["var(--font-source-serif)", "Georgia", "serif"],
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],

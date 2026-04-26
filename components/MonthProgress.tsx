@@ -29,18 +29,18 @@ export function MonthProgress({ selectedKey, onSelect }: Props) {
         const startDay = isCurrentMonth ? todayDay - 1 : 1;
 
         return (
-          <div key={monthIdx} className="flex items-center gap-1.5 md:gap-2">
+          <div key={monthIdx} className="flex items-center gap-1.5 md:gap-2 2xl:gap-3 3xl:gap-3.5">
             <span
-              className={`font-serif text-[10px] ${
+              className={`font-serif text-[10px] 2xl:text-[12px] 3xl:text-[14px] ${
                 isCurrentMonth ? "text-black" : "text-muted-soft"
               }`}
             >
               {String(monthIdx + 1).padStart(2, "0")}
             </span>
             {isCurrentMonth && startDay > 1 && (
-              <span className="text-[10px] text-muted-faint">...</span>
+              <span className="text-[10px] 2xl:text-[12px] 3xl:text-[14px] text-muted-faint">...</span>
             )}
-            <div className="flex items-center gap-[3px] md:gap-2">
+            <div className="flex items-center gap-[3px] md:gap-2 2xl:gap-[14px] 3xl:gap-[18px]">
               {Array.from({ length: total - startDay + 1 }, (_, i) => {
                 const day = startDay + i;
                 const date = new Date(YEAR, monthIdx, day);

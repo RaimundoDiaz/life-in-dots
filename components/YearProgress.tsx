@@ -21,11 +21,11 @@ export function YearProgress({ selectedKey, onSelect }: Props) {
       {Array.from({ length: 12 }, (_, monthIdx) => {
         const total = daysInMonth(YEAR, monthIdx);
         return (
-          <div key={monthIdx} className="flex items-center gap-1.5 md:gap-2">
-            <span className="font-serif text-[10px] text-muted-soft">
+          <div key={monthIdx} className="flex items-center gap-1.5 md:gap-2 2xl:gap-3 3xl:gap-3.5">
+            <span className="font-serif text-[10px] 2xl:text-[12px] 3xl:text-[14px] text-muted-soft">
               {String(monthIdx + 1).padStart(2, "0")}
             </span>
-            <div className="flex items-center gap-[3px] md:gap-2">
+            <div className="flex items-center gap-[3px] md:gap-2 2xl:gap-[14px] 3xl:gap-[18px]">
               {Array.from({ length: total }, (_, i) => {
                 const day = i + 1;
                 const date = new Date(YEAR, monthIdx, day);
