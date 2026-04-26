@@ -5,7 +5,7 @@
 ### See your year as dots and turn your days into wins
 
 <a href="https://yourlifeindots.com">
-  <img src="https://yourlifeindots.com/opengraph-image" alt="Life in Dots — Your year in dots" width="640" />
+  <img src="https://yourlifeindots.com/opengraph-image?v=en" alt="Life in Dots — Your year in dots" width="640" />
 </a>
 
 <p>
