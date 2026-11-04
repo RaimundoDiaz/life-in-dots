@@ -70,7 +70,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://<your-ref>.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<your-publishable-key>
 ```
 
 ## 📜 Scripts
