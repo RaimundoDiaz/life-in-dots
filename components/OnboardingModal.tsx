@@ -184,7 +184,7 @@ function DayStatesStep({ onNext, onBack }: { onNext: () => void; onBack: () => v
   const t = useT();
   const items: { color: string; titleKey: string; subKey: string }[] = [
     { color: "bg-black", titleKey: "onboarding.states.completed", subKey: "onboarding.states.completedSub" },
-    { color: "bg-danger", titleKey: "onboarding.states.partial", subKey: "onboarding.states.partialSub" },
+    { color: "bg-intensity-2", titleKey: "onboarding.states.partial", subKey: "onboarding.states.partialSub" },
     { color: "bg-white border-2 border-danger", titleKey: "onboarding.states.missed", subKey: "onboarding.states.missedSub" },
     { color: "bg-success", titleKey: "onboarding.states.today", subKey: "onboarding.states.todaySub" },
   ];

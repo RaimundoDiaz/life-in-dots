@@ -1,6 +1,14 @@
 import { DayData } from "./store";
 
-export type DayState = "future" | "today" | "completed" | "partial" | "missed" | "empty";
+type PartialLevel = 1 | 2 | 3;
+
+export type DayState =
+  | "future"
+  | "today"
+  | "completed"
+  | `partial-${PartialLevel}`
+  | "missed"
+  | "empty";
 
 export function computeDayState(
   date: Date,
@@ -16,5 +24,13 @@ export function computeDayState(
   const done = data.goals.filter((g) => g.done).length;
   if (done === 0) return "missed";
   if (done === total) return "completed";
-  return "partial";
+  return `partial-${partialLevel(done, total)}`;
+}
+
+// Splits partial progress into thirds, like GitHub's contribution shades.
+// Integer math so 1/3 and 2/3 land on the boundaries exactly.
+function partialLevel(done: number, total: number): PartialLevel {
+  if (done * 3 <= total) return 1;
+  if (done * 3 <= total * 2) return 2;
+  return 3;
 }

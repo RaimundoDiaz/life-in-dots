@@ -16,12 +16,14 @@ const FLUID_SIZE =
 const FIXED_SIZE = "w-2 h-2 2xl:w-2.5 2xl:h-2.5 3xl:w-3 3xl:h-3";
 
 const STATE_CLASS: Record<DayState, string> = {
-  completed: "bg-black border-black",
-  partial: "bg-[#dc2626] border-[#dc2626]",
-  missed: "bg-transparent border-[#dc2626]",
-  today: "bg-[#16a34a] border-[#16a34a]",
-  future: "bg-transparent border-[#d5d5d5]",
-  empty: "bg-transparent border-[#d5d5d5]",
+  completed: "bg-ink border-ink",
+  "partial-1": "bg-intensity-1 border-intensity-1",
+  "partial-2": "bg-intensity-2 border-intensity-2",
+  "partial-3": "bg-intensity-3 border-intensity-3",
+  missed: "bg-transparent border-danger",
+  today: "bg-success border-success",
+  future: "bg-transparent border-line-soft",
+  empty: "bg-transparent border-line-soft",
 };
 
 export function DayDot({ state, onClick, active, title, fluid }: Props) {
