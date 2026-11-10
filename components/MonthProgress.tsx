@@ -31,16 +31,16 @@ export function MonthProgress({ selectedKey, onSelect }: Props) {
         return (
           <div key={monthIdx} className="flex items-center gap-1.5 md:gap-2 2xl:gap-3 3xl:gap-3.5">
             <span
-              className={`font-serif text-[10px] 2xl:text-[12px] 3xl:text-[14px] ${
+              className={`shrink-0 tabular-nums font-serif text-[10px] 2xl:text-[12px] 3xl:text-[14px] ${
                 isCurrentMonth ? "text-black" : "text-muted-soft"
               }`}
             >
               {String(monthIdx + 1).padStart(2, "0")}
             </span>
-            {isCurrentMonth && startDay > 1 && (
-              <span className="text-[10px] 2xl:text-[12px] 3xl:text-[14px] text-muted-faint">...</span>
-            )}
-            <div className="flex items-center gap-[3px] md:gap-2 2xl:gap-[14px] 3xl:gap-[18px]">
+            <div className="grid grid-cols-31 items-center flex-1 min-w-0">
+              {isCurrentMonth && startDay > 1 && (
+                <span className="text-center text-[10px] 2xl:text-[12px] 3xl:text-[14px] text-muted-faint">...</span>
+              )}
               {Array.from({ length: total - startDay + 1 }, (_, i) => {
                 const day = startDay + i;
                 const date = new Date(YEAR, monthIdx, day);
@@ -53,6 +53,7 @@ export function MonthProgress({ selectedKey, onSelect }: Props) {
                     onClick={() => onSelect(key)}
                     active={selectedKey === key}
                     title={`${day} ${getMonthName(monthIdx, locale)}`}
+                    fluid
                   />
                 );
               })}
