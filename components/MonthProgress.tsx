@@ -26,7 +26,8 @@ export function MonthProgress({ selectedKey, onSelect }: Props) {
       {monthsToShow.map((monthIdx) => {
         const total = daysInMonth(YEAR, monthIdx);
         const isCurrentMonth = monthIdx === todayMonth;
-        const startDay = isCurrentMonth ? todayDay - 1 : 1;
+        // Start from yesterday, but never before day 1 (on the 1st that would be "day 0").
+        const startDay = isCurrentMonth ? Math.max(1, todayDay - 1) : 1;
 
         return (
           <div key={monthIdx} className="flex items-center gap-1.5 md:gap-2 2xl:gap-3 3xl:gap-3.5">
