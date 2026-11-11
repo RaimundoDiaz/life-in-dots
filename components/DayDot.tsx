@@ -20,7 +20,6 @@ const STATE_CLASS: Record<DayState, string> = {
   "partial-1": "bg-intensity-1 border-intensity-1",
   "partial-2": "bg-intensity-2 border-intensity-2",
   "partial-3": "bg-intensity-3 border-intensity-3",
-  missed: "bg-transparent border-danger",
   today: "bg-success border-success",
   future: "bg-transparent border-line-soft",
   empty: "bg-transparent border-line-soft",
