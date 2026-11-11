@@ -7,7 +7,6 @@ export type DayState =
   | "today"
   | "completed"
   | `partial-${PartialLevel}`
-  | "missed"
   | "empty";
 
 export function computeDayState(
@@ -19,10 +18,11 @@ export function computeDayState(
   if (isSame) return "today";
   if (date > today) return "future";
 
-  if (!data || data.goals.length === 0) return "missed";
+  // Like GitHub, a past day with nothing done is simply left blank.
+  if (!data || data.goals.length === 0) return "empty";
   const total = data.goals.length;
   const done = data.goals.filter((g) => g.done).length;
-  if (done === 0) return "missed";
+  if (done === 0) return "empty";
   if (done === total) return "completed";
   return `partial-${partialLevel(done, total)}`;
 }
