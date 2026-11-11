@@ -1,4 +1,13 @@
 import type { Config } from "tailwindcss";
+import { ACTIVITY_PALETTES } from "./lib/prototype/palettes";
+
+// Prototype activity colours as `activity-<palette>-<1..4>`.
+const activityColors = Object.fromEntries(
+  Object.entries(ACTIVITY_PALETTES).map(([id, steps]) => [
+    id,
+    { 1: steps[0], 2: steps[1], 3: steps[2], 4: steps[3] },
+  ])
+);
 
 const config: Config = {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
@@ -37,6 +46,7 @@ const config: Config = {
           2: "#8a8a8a",
           3: "#4d4d4d",
         },
+        activity: activityColors,
       },
     },
   },
