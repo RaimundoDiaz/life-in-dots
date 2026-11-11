@@ -8,6 +8,10 @@ const config: Config = {
         "2xl": "1400px",
         "3xl": "1920px",
       },
+      gridTemplateColumns: {
+        // One column per day of the longest month, used by the dot calendar rows.
+        "31": "repeat(31, minmax(0, 1fr))",
+      },
       fontFamily: {
         serif: ["var(--font-source-serif)", "Georgia", "serif"],
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
