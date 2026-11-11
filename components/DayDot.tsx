@@ -34,7 +34,7 @@ export function DayDot({ state, onClick, active, title, fluid }: Props) {
       onClick={onClick}
       className={`shrink-0 rounded-full border ${fluid ? FLUID_SIZE : FIXED_SIZE} ${STATE_CLASS[state]} transition-all ${
         onClick ? "hover:scale-125 active:scale-90 cursor-pointer" : "cursor-default"
-      } ${active ? "ring-2 ring-black ring-offset-1" : ""}`}
+      } ${active ? "ring-2 ring-ink ring-offset-1" : ""}`}
     />
   );
 }
