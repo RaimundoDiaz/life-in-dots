@@ -31,6 +31,12 @@ const config: Config = {
         "danger-soft": "#b91c1c",
         success: "#16a34a",
         tooltip: "#22221e",
+        // Partially completed days: lighter = fewer goals done, darker = closer to done.
+        intensity: {
+          1: "#c2c2c2",
+          2: "#8a8a8a",
+          3: "#4d4d4d",
+        },
       },
     },
   },
