@@ -10,9 +10,8 @@ export function Legend() {
     <div className="flex items-center gap-6 2xl:gap-8 3xl:gap-10 flex-wrap">
       <Item states={["completed"]} label={t("legend.completed")} />
       <Item states={["partial-1", "partial-2", "partial-3"]} label={t("legend.partial")} />
-      <Item states={["missed"]} label={t("legend.missed")} />
+      <Item states={["empty"]} label={t("legend.empty")} />
       <Item states={["today"]} label={t("legend.today")} />
-      <Item states={["future"]} label={t("legend.future")} />
     </div>
   );
 }

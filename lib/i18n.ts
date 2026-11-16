@@ -33,9 +33,8 @@ const dictionaries: Record<Locale, Record<string, string>> = {
 
     "legend.completed": "Día cumplido",
     "legend.partial": "Parcialmente cumplido",
-    "legend.missed": "No cumplido",
+    "legend.empty": "Sin actividad",
     "legend.today": "Hoy",
-    "legend.future": "Futuro",
 
     "goals.todayPrefix": "Hoy",
     "goals.dayOfYear": "Día {n} de {total}",
@@ -153,9 +152,8 @@ const dictionaries: Record<Locale, Record<string, string>> = {
 
     "legend.completed": "Day completed",
     "legend.partial": "Partially completed",
-    "legend.missed": "Not completed",
+    "legend.empty": "No activity",
     "legend.today": "Today",
-    "legend.future": "Future",
 
     "goals.todayPrefix": "Today",
     "goals.dayOfYear": "Day {n} of {total}",
@@ -270,9 +268,8 @@ const dictionaries: Record<Locale, Record<string, string>> = {
 
     "legend.completed": "Dia concluído",
     "legend.partial": "Parcialmente concluído",
-    "legend.missed": "Não concluído",
+    "legend.empty": "Sem atividade",
     "legend.today": "Hoje",
-    "legend.future": "Futuro",
 
     "goals.todayPrefix": "Hoje",
     "goals.dayOfYear": "Dia {n} de {total}",
@@ -390,9 +387,8 @@ const dictionaries: Record<Locale, Record<string, string>> = {
 
     "legend.completed": "Jour accompli",
     "legend.partial": "Partiellement accompli",
-    "legend.missed": "Non accompli",
+    "legend.empty": "Aucune activité",
     "legend.today": "Aujourd’hui",
-    "legend.future": "À venir",
 
     "goals.todayPrefix": "Aujourd’hui",
     "goals.dayOfYear": "Jour {n} sur {total}",
@@ -510,9 +506,8 @@ const dictionaries: Record<Locale, Record<string, string>> = {
 
     "legend.completed": "Giorno completato",
     "legend.partial": "Parzialmente completato",
-    "legend.missed": "Non completato",
+    "legend.empty": "Nessuna attività",
     "legend.today": "Oggi",
-    "legend.future": "Futuro",
 
     "goals.todayPrefix": "Oggi",
     "goals.dayOfYear": "Giorno {n} di {total}",
