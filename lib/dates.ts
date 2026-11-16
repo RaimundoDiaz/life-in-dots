@@ -57,6 +57,22 @@ export function formatLongDate(date: Date, locale: Locale): string {
   }).format(date);
 }
 
+export function formatWeekdayShort(date: Date, locale: Locale): string {
+  return new Intl.DateTimeFormat(intlLocale(locale), { weekday: "short" }).format(date);
+}
+
+export function formatDayMonth(date: Date, locale: Locale): string {
+  return new Intl.DateTimeFormat(intlLocale(locale), { day: "numeric", month: "long" }).format(date);
+}
+
+export function formatWeekdayDayMonth(date: Date, locale: Locale): string {
+  return new Intl.DateTimeFormat(intlLocale(locale), {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  }).format(date);
+}
+
 export function formatShortMonthDay(date: Date, locale: Locale): string {
   return new Intl.DateTimeFormat(intlLocale(locale), {
     day: "numeric",
